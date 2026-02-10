@@ -3,22 +3,34 @@ import { z } from "zod";
 
 // Mock data
 const customers = [
-  { id: "C001", name: "Sarah Johnson", phone: "555-123-4567", email: "sarah.j@email.com", balance: 0 },
-  { id: "C002", name: "Mike Chen", phone: "555-234-5678", email: "mike.chen@email.com", balance: 25 },
-  { id: "C003", name: "Emily Davis", phone: "555-345-6789", email: "emily.d@email.com", balance: 0 },
+  { id: "C001", name: "Sarah Johnson", phone: "555-123-4567", email: "sarah.j@email.com", balance: 0, tier: "gold", visits: 24 },
+  { id: "C002", name: "Mike Chen", phone: "555-234-5678", email: "mike.chen@email.com", balance: 25, tier: "standard", visits: 3 },
+  { id: "C003", name: "Emily Davis", phone: "555-345-6789", email: "emily.d@email.com", balance: 0, tier: "platinum", visits: 52 },
+  { id: "C004", name: "James Rodriguez", phone: "555-456-7890", email: "j.rodriguez@email.com", balance: 45, tier: "standard", visits: 7 },
+  { id: "C005", name: "Aisha Patel", phone: "555-567-8901", email: "aisha.p@email.com", balance: 0, tier: "gold", visits: 18 },
+  { id: "C006", name: "Tom Bradley", phone: "555-678-9012", email: "tbradley@email.com", balance: 120, tier: "standard", visits: 1 },
 ];
 
 const appointments = [
-  { id: "A001", customerId: "C001", date: "2024-02-15", time: "10:00 AM", service: "haircut", price: 35, status: "confirmed" },
-  { id: "A002", customerId: "C002", date: "2024-02-16", time: "2:00 PM", service: "coloring", price: 120, status: "confirmed" },
-  { id: "A003", customerId: "C003", date: "2024-02-14", time: "11:00 AM", service: "styling", price: 45, status: "confirmed" },
+  { id: "A001", customerId: "C001", date: "2026-02-15", time: "10:00 AM", service: "haircut", price: 35, status: "confirmed" },
+  { id: "A002", customerId: "C002", date: "2026-02-16", time: "2:00 PM", service: "coloring", price: 120, status: "confirmed" },
+  { id: "A003", customerId: "C003", date: "2026-02-14", time: "11:00 AM", service: "styling", price: 45, status: "confirmed" },
+  { id: "A004", customerId: "C004", date: "2026-02-17", time: "3:00 PM", service: "beard-trim", price: 20, status: "confirmed" },
+  { id: "A005", customerId: "C005", date: "2026-02-18", time: "9:30 AM", service: "highlights", price: 150, status: "confirmed" },
+  { id: "A006", customerId: "C001", date: "2026-02-22", time: "11:00 AM", service: "deep-conditioning", price: 55, status: "confirmed" },
 ];
 
 const availableSlots = [
-  { date: "2024-02-17", time: "9:00 AM", service: "haircut" },
-  { date: "2024-02-17", time: "11:00 AM", service: "haircut" },
-  { date: "2024-02-17", time: "2:00 PM", service: "coloring" },
-  { date: "2024-02-18", time: "10:00 AM", service: "haircut" },
+  { date: "2026-02-17", time: "9:00 AM", service: "haircut" },
+  { date: "2026-02-17", time: "11:00 AM", service: "haircut" },
+  { date: "2026-02-17", time: "2:00 PM", service: "coloring" },
+  { date: "2026-02-18", time: "10:00 AM", service: "haircut" },
+  { date: "2026-02-18", time: "1:00 PM", service: "styling" },
+  { date: "2026-02-19", time: "9:00 AM", service: "highlights" },
+  { date: "2026-02-19", time: "11:30 AM", service: "haircut" },
+  { date: "2026-02-19", time: "3:00 PM", service: "beard-trim" },
+  { date: "2026-02-20", time: "10:00 AM", service: "coloring" },
+  { date: "2026-02-20", time: "2:00 PM", service: "deep-conditioning" },
 ];
 
 // ============ SAFE TOOLS (No approval needed) ============
@@ -34,7 +46,7 @@ export const searchCustomers = tool(
     if (results.length === 0) return "No customers found.";
 
     return results
-      .map((c) => `ID: ${c.id} | ${c.name} | ${c.phone} | Balance: $${c.balance}`)
+      .map((c) => `ID: ${c.id} | ${c.name} | ${c.phone} | Tier: ${c.tier} | Visits: ${c.visits} | Balance: $${c.balance}`)
       .join("\n");
   },
   {
